@@ -1,0 +1,36 @@
+# 临时与备份文件
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# 密钥与证书 (严格禁止提交个人敏感凭据)
+*.key
+*.pem
+*.pub
+id_rsa*
+id_dropbear*
+authorized_keys*
+
+# 运行时日志与 PID 锁
+*.log
+*.pid
+ups_shutdown.log
+ups_events.log
+
+# LuCI 缓存与中间产物
+luci-indexcache
+luci-modulecache
+ipk_build/
+ipk_src/
+ipk_final/
+
+# 操作系统与 IDE 配置
+.idea/
+.vscode/
+*.suo
+*.user
+

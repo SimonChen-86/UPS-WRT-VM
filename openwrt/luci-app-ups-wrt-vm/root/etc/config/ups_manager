@@ -1,0 +1,18 @@
+
+config settings 'main'
+	option enabled '1'
+	option onbatt_delay '180'
+	option onbatt_wait_seconds '180'
+	option vm_shutdown_timeout '150'
+	option lowbatt_shutdown '1'
+	option lowbatt_instant_shutdown '1'
+	option esxi_ip '192.168.1.100'
+	option esxi_host '192.168.1.100'
+	option esxi_user 'root'
+	option log_file '/etc/ups_manager/ups_events.log'
+	option nut_host '127.0.0.1'
+	option nut_port '3493'
+	option nut_upsname 'ups'
+	option nut_user 'monuser'
+	option nut_password 'secret123'
+

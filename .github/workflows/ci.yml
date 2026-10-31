@@ -1,0 +1,42 @@
+name: CI Syntax & Security Audit
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Lua & Shell Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 shellcheck
+
+      - name: Lua Syntax Check
+        run: |
+          echo "Checking Lua syntax..."
+          luac5.1 -p openwrt/luci-app-ups-wrt-vm/luasrc/controller/ups_wrt_vm.lua
+          luac5.1 -p openwrt/luci-app-ups-wrt-vm/luasrc/model/cbi/ups_wrt_vm.lua
+          echo "All Lua files passed syntax check!"
+
+      - name: Shell Scripts Syntax Check
+        run: |
+          echo "Checking Shell syntax with shellcheck / sh -n..."
+          sh -n openwrt/luci-app-ups-wrt-vm/root/etc/nut/ups_scheduler.sh
+          sh -n openwrt/quick_install.sh
+          sh -n esxi/ups_safe_shutdown.sh
+          sh -n esxi/quick_install.sh
+          echo "All Shell scripts passed basic syntax check!"
+
+      - name: Privacy & Hardcoded IP Sanitization Audit
+        run: |
+          echo "Auditing for private IP leakages..."
+          BLOCKED_PAT="192.168."$(printf '66.')
+          ! grep -rn "$BLOCKED_PAT" openwrt/ esxi/ docs/ || { echo "ERROR: Found hardcoded private IP!"; exit 1; }
+          echo "Privacy audit PASSED!"
